@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'quantity' => $this->faker->numberBetween(10, 50),
             'price' => $this->faker->randomFloat(2, 10, 50),
             'cost_price' => $this->faker->randomFloat(2, 100, 300),
-            
+         
             'current_quantity' => $this->faker->numberBetween(50, 100),
         ];
     }

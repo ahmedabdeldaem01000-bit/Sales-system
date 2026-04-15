@@ -42,6 +42,42 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('purchase.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                المشتريات
+                <!-- <span class="right badge badge-danger">New</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('purchase.create') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                انشاء المشتريات
+                <!-- <span class="right badge badge-danger">New</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('supplier.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                الموردين
+                <!-- <span class="right badge badge-danger">New</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('supplier.create') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                انشاء موردين جديد
+                <!-- <span class="right badge badge-danger">New</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('sales-report.index') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>

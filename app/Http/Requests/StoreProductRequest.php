@@ -29,7 +29,7 @@ class StoreProductRequest extends FormRequest
             'price_unit'      => 'required|numeric',
             'date_of_pay'     => 'required|date',
             'emp_name'        => 'required|exists:employees,id', // التحقق من وجود الجندي في الـ database
-            'supplier_id'    => 'required|exists:suppliers,id', // ← مهم جداً
+           
             
         ];
     }

@@ -54,16 +54,7 @@
                             <input type="number" step="0.01" name="price_unit" class="form-control" value="{{ old('price_unit', $product->cost_price) }}" required>
                         </div>
 
-                        <div class="col-4">
-                            <label>اسم المورد</label>
-                            <select name="supplier_id" class="form-control" required>
-                                @foreach($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}" {{ $product->supplier_id == $supplier->id ? 'selected' : '' }}>
-                                        {{ $supplier->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                   
 
                         <div class="col-4">
                             <label>تاريخ الدفع / الإضافة</label>

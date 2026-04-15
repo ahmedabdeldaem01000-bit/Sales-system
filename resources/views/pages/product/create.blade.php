@@ -104,7 +104,7 @@
 
      </div>
       </div>
-      <button type="submit" class="btn btn-primary">إضافة جندي</button>
+      <button type="submit" class="btn btn-primary">إضافة منتج </button>
 
       </form>
 

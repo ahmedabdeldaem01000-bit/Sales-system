@@ -1,6 +1,6 @@
 @extends('layout.app')
 
-@section('title', ' المورد')
+@section('title', ' الموردين')
 
 @section('content')
     <section class="content">
@@ -10,49 +10,58 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h3 class="card-title"> المورد</h3>
-                            <a href="#" class="btn btn-success mb-3"> اضافة منتج جديد</a>
+                            <h3 class="card-title"> الموردين</h3>
                         </div>
                         <div class="card-body">
                             <!-- نموذج إرسال إجازة جماعية -->
-                            <form action="#" method="POST">
+                        
+
+
+  <form action="{{ route('supplier.bulkDelete') }}" method="POST" id="bulk-delete-form">
                                 @csrf
+                                @method('DELETE')
 
-
-
+                                <button type="submit" class="mb-3 btn btn-danger">حذف المنتجات المحددة</button>
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                         
+   
+                                            <th>#</th>
                                             <th>ID</th>
-                                            <th>اسم المنتج</th>
-                                            <th>الكميه المشترا</th>
-                                            <th>اجمالي سعر </th>
-                                            <th> سعر الوحده</th>
-                                            <th>اسم المورد </th>
-                                            <th>اسم  الجندي </th>
+                                            <th>اسم المورد</th>
+                                            <th>الايميل</th>
+                                            <th>الهاتف</th>
+                                            <th>العنوان</th>
+                                            <th>actions</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($purchases as $purchase)
-            <tr>
-                <td>{{ $purchase->id}}</td>
-                <td>{{ $purchase->product->name ?? 'غير معروف' }}</td>
-                <td>{{ $purchase->quantity }}</td>
-                <td>{{ number_format($purchase->total_price, 2) }}</td>
-                <td>{{ number_format($purchase->unit_price, 2) }}</td>
-                <td>{{ $purchase->supplier->name ?? 'غير معروف' }}</td>
-                <td>{{ optional($purchase->employee)->name ?? 'لا يوجد جندي' }}</td> <!-- التحقق إذا كان employee موجود -->
+                                        @foreach ($suppliers as $supplier)
+                                            <tr>
+                                                 <td>
+                                                    <input type="checkbox" name="supplier[]" value="{{ $supplier->id }}">
+                                                </td>
+                                                <td>{{ $supplier->id}}</td>
+                                                <td>{{ $supplier->name  }}</td>
+                                                <td>{{ $supplier->email ?? 'غير معروف'}}</td>
+
+                                                <td>{{ $supplier->phone ?? 'غير معروف' }}</td>
+                                                <td>{{ $supplier->address ?? 'غير معروف' }}</td>
+                                                <td>
+                                                    <a class="btn btn-success" href="{{ route('supplier.edit',$supplier->id) }}">update</a>
+                                                </td>
+                                                <!-- التحقق إذا كان employee موجود -->
 
 
 
 
-            </tr>
-        @endforeach
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
 
-                                <button type="submit" class="btn btn-primary mt-3">إرسال </button>
+                                <button type="submit" class="mt-3 btn btn-primary">إرسال </button>
                             </form>
                         </div>
                     </div>
@@ -103,14 +112,14 @@
         $(document).ready(function () {
             // تحديد كل الجنود عند النقر على "اختيار الكل"
             $('#select-all').on('click', function () {
-                $('input[name="soldiers[]"]').prop('checked', this.checked);
+                $('input[name="supplier[]"]').prop('checked', this.checked);
             });
 
             // التأكد من أن هناك جنود مختارين قبل إرسال النموذج
             $('form').on('submit', function (e) {
-                if ($('input[name="soldiers[]"]:checked').length == 0) {
+                if ($('input[name="supplier[]"]:checked').length == 0) {
                     e.preventDefault();
-                    Swal.fire('خطأ', 'يرجى تحديد جندي واحد على الأقل لإرسال الإجازة.', 'error');
+                    Swal.fire('خطأ', 'يرجى تحديد مورد واحد على الأقل  .', 'error');
                 }
             });
         });
@@ -121,4 +130,3 @@
 
 
 <!-- ////////////////////////////////////////////////////////// -->
-

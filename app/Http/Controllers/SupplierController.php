@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -12,9 +13,9 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::with(['supplier', 'product', 'employee'])->get();
+       $suppliers=Supplier::get();
 
-        return view('pages.supplier.index', compact('purchases'));
+        return view('pages.supplier.index', compact('suppliers'));
     }
 
     /**
@@ -22,7 +23,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.supplier.create');
     }
 
     /**
@@ -30,7 +31,22 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=$request->validate([
+            'name'=>'required',
+            'email'=>'required|email',
+            'phone'=>'required',
+            'address'=>'required',
+        ]);
+        // dd($data)
+;
+        Supplier::create([
+            'name'=>$data['name'],
+            'email'=>$data['email'],
+            'phone'=>$data['phone'],
+            'address'=>$data['address'],
+        ]);
+                    return redirect()->route('supplier.create')->with('success', 'تم اضافه المورد بنجاح');
+
     }
 
     /**
@@ -60,8 +76,30 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+
+  $ids = $request->input('supplier'); // نتأكد إن الاسم متطابق مع الفورم
+
+        if ($ids && is_array($ids)) {
+            Supplier::whereIn('id', $ids)->delete();
+            return redirect()->route('supplier.index')->with('success', 'تم حذف المنتجات المحددة بنجاح');
+        }
+
+        return redirect()->route('supplier.index')->with('error', 'لم يتم تحديد منتجات للحذف');
+
+    }
+
+       public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('supplier'); // نتأكد إن الاسم متطابق مع الفورم
+
+        if ($ids && is_array($ids)) {
+            Supplier::whereIn('id', $ids)->delete();
+            return redirect()->route('supplier.index')->with('success', 'تم حذف المنتجات المحددة بنجاح');
+        }
+
+        return redirect()->route('supplier.index')->with('error', 'لم يتم تحديد منتجات للحذف');
+ 
     }
 }

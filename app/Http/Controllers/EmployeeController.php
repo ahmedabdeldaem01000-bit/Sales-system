@@ -17,10 +17,9 @@ public function index()
     $employees = Employee::with(['orderItems', 'debts'])->get();
 
     foreach ($employees as $employee) {
-        // إجمالي المبيعات = price * quantity
+       
         $employee->total_sales = $employee->orderItems->sum(fn($item) => $item->price * $item->quantity);
 
-        // إجمالي المديونية الغير مدفوعة
         $employee->total_debt = $employee->debts
             ->where('payment_status', 'unpaid')
             ->sum(fn($debt) => $debt->price * $debt->quantity);

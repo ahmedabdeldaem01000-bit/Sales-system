@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('set null');
-            $table->integer('quantity');
-            $table->decimal('unit_price', 10, 2);
             $table->decimal('total_price', 12, 2);
             $table->timestamps();
         });

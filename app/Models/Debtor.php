@@ -9,7 +9,7 @@ class Debtor extends Model
 {
     use HasFactory;
     
-
+//                                                       ❌                               ❌
     protected $fillable = ['name', 'price', 'quantity', 'user', 'employee_id', 'date','customer_name' ,'payment_status'];
   
     public function employee()

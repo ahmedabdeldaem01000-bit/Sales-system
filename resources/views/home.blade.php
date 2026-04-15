@@ -37,7 +37,7 @@
         <div class="icon">
           <i class="fas fa-shopping-cart"></i>
         </div>
-        <a href="{{ route('sales.index') }}" class="small-box-footer">
+        <a href="#" class="small-box-footer">
           تفاصيل أكثر <i class="fas fa-arrow-circle-left"></i>
         </a>
         </div>

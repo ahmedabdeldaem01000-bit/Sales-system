@@ -11,7 +11,7 @@ class Employee extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role',
+        'name', 'email', 'password', 'role','phone','address'
     ];
 
     protected $hidden = ['password'];
@@ -39,9 +39,7 @@ public function orderItems()
 }
 
 
-    /**
-     * الديون الخاصة بالموظف (لما العميل يكون مدفعلوش)
-     */
+  
     public function debts()
     {
         return $this->hasMany(Debtor::class, 'employee_id');
@@ -58,8 +56,8 @@ public function orderItems()
     /**
      * المنتجات اللي الموظف أضافها (لو فيه موظفين بيسجلوا منتجات)
      */
-    public function products()
-    {
-        return $this->hasMany(Product::class, 'employee_id');
-    }
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class, 'employee_id');
+    // }
 }

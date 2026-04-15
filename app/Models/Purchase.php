@@ -10,22 +10,26 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+
         'supplier_id',
         'product_id',
-        'quantity',
-        'unit_price',
         'total_price',
     ];
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Supplier::class)->withTrashed();
     }
+
+    // public function product()
+    // {
+    //     return $this->belongsTo(Product::class);
+    // }
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsToMany(Product::class, 'purchase_items')
+            ->withPivot('quantity', 'price');
     }
     // في Purchase.php
     // تحديد العلاقة مع الموظف
@@ -33,5 +37,6 @@ class Purchase extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
 
 }

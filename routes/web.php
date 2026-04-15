@@ -7,8 +7,7 @@ use App\Http\Controllers\MinProductController;
 use App\Http\Controllers\ProcessingSaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductsEmployeeController;
-use App\Http\Controllers\RestoreController;
-use App\Http\Controllers\SaleController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,27 +24,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/home', [home::class, 'index'])->name('home');
     Route::get('/admin', fn() => view('pages.admin.dashboard'))->name('admin.dashboard');
-    Route::get('/employees/{id}/sales', [App\Http\Controllers\EmployeeController::class, 'sales'])->name('employees.sales');
+    Route::get('/employees/{id}/sales', [EmployeeController::class, 'sales'])->name('employees.sales');
 
 
     Route::resource('sales-report', ProcessingSaleController::class);
     Route::resource('product', ProductController::class);
-    Route::resource('sales', SaleController::class);
     Route::resource('debtor', DebtorController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('min_product', MinProductController::class);
     Route::resource('employee-products', ProductsEmployeeController::class);
     Route::get('/processing-sales/run', [ProcessingSaleController::class, 'processSales'])->name('processing-sales.processSales');
     Route::patch('/debts/{id}/mark-paid', [DebtorController::class, 'markAsPaid'])->name('debt.markAsPaid');
+    Route::resource('purchase', PurchaseController::class);
+     
 
     Route::delete('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulkDelete');
+    Route::delete('/supplier/bulk-delete', [SupplierController::class, 'bulkDelete'])->name('supplier.bulkDelete');
 });
+
 
 
 Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::resource('employee-products', ProductsEmployeeController::class);
-    // Route::get('employee-restore', [RestoreController::class,'restoreProducts'])->name('order.restoreProducts');
-// Route::get('/print-order/{id}', [RestoreController::class, 'print'])->name('order.print');
+
+
 
 
 

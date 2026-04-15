@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('supplier')->get();
+        $products = Product::get();
         return view('pages.product.index', compact('products'));
     }
 
@@ -52,19 +52,12 @@ class ProductController extends Controller
             'price'            => $validated['total_price'],  // سعر البيع
             'quantity'         => $validated['total_quantity'], // الكمية
             'cost_price'       => $validated['price_unit'],     // سعر الشراء
-            'supplier_id'      => $validated['supplier_id'],
+            
             'created_at'       => $validated['date_of_pay'],
-            'total_cost'       => $total_cost, // شيله وحطه في ال supplier
+            'total_cost'       => $total_cost, 
         ]);
     
-        // جلب البيانات للعرض
-        $employees = Employee::get();
-        $suppliers = Supplier::get();
-        $products  = Product::get();
-        
-        // return redirect()->route('product.index', compact('employees', 'suppliers', 'products'))
-
-        //     ->with('success', 'تم إضافة المنتج بنجاح');
+       
         return redirect()->route('product.index')->with('success', 'تم إضافة المنتج بنجاح');
 
     }
@@ -108,7 +101,7 @@ public function update(Request $request, string $id)
         'price' => 'required|numeric',
         'total_quantity' => 'required|integer',
         'price_unit' => 'required|numeric',
-        'supplier_id' => 'required|exists:suppliers,id',
+       
         'date_of_pay' => 'required|date',
     ]);
 
@@ -118,7 +111,7 @@ public function update(Request $request, string $id)
         'price' => $request->price,
         'quantity' => $request->total_quantity,
         'cost_price' => $request->price_unit,
-        'supplier_id' => $request->supplier_id,
+        
         'created_at' => $request->date_of_pay,
         'total_cost' => $request->price_unit * $request->total_quantity,
     ]);
@@ -147,17 +140,5 @@ public function update(Request $request, string $id)
         return redirect()->back()->with('error', 'لم يتم تحديد منتجات للحذف');
  
     }
-
-       public function apiIndex(Request $request)
-    {
-        // لو عايز ترجع بس المنتجات المتوفرة:
-        // $products = Product::where('quantity', '>', 0)->get();
-        
-        // أو ترجع كل الحقول الأساسية:
-        $products = Product::all(['id', 'name', 'quantity', 'price', 'cost_price', 'supplier_id']);
-
-        return response()->json([
-            'products' => $products,
-        ], 200);
-    }
+ 
 }

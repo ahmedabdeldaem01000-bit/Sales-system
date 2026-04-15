@@ -18,7 +18,9 @@ return new class extends Migration
             $table->integer('quantity')->default(0);
             $table->integer('current_quantity')->default(0);
             $table->decimal('price', 10, 2);
+            // $table->foreignId('supplier_id')->default(1)->constrained()->cascadeOnDelete();
             $table->decimal('cost_price', 10, 2);
+            $table->decimal('total_cost', 10, 2)->default(0);
               $table->integer('sold_quantity')->default(0);
               $table->string('barcode')->unique()->nullable();
             $table->timestamps();

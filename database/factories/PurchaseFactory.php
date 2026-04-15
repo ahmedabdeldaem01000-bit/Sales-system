@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +20,7 @@ class PurchaseFactory extends Factory
     public function definition(): array
     {
         $supplier = Supplier::inRandomOrder()->first() ?? Supplier::factory()->create();
-        $product = Product::inRandomOrder()->first() ?? Product::factory()->create();
+        $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
 
         $quantity = $this->faker->numberBetween(1, 100);
         $unit_price = $this->faker->randomFloat(2, 10, 500);
@@ -27,10 +28,9 @@ class PurchaseFactory extends Factory
 
         return [
             'supplier_id' => $supplier->id,
-            'product_id' => $product->id,
-            'quantity' => $quantity,
-            'unit_price' => $unit_price,
+            'employee_id' => $employee->id,
             'total_price' => $total_price,
+      
         ];
     
     }

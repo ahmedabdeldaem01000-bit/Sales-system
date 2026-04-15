@@ -18,8 +18,6 @@ return new class extends Migration {
             $table->string('role')->default('employee');
             $table->string('email')->nullable();
             $table->string('password')->default('employee');
-            $table->unsignedBigInteger('supplier_id')->default(1)->constrained('suppliers')->onDelete('set null');
-            $table->unsignedBigInteger('employee_id')->default(1)->constrained('employees')->onDelete('set null');
 
             $table->timestamps();
         });
