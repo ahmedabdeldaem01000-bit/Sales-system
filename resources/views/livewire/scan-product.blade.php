@@ -56,47 +56,73 @@
                     </div>
                 @endforeach
 
+
+                @if(empty($users))
+                <div class="form-group">
+                    <label>اختر العميل</label>
+                        <select name="user" class="form-control select2" style="width: 100%;">
+                            <option selected="selected">no user found</option>
+
+
+                        </select>
+                        </div>
+                    @else
+<div class="form-group">
+    <label>اختيار العميل</label>
+    <select wire:model="selected_user_id" class="form-control">
+        <option value="">-- اختر عميل --</option>
+        @foreach($users as $user)
+            <option value="{{ $user->id }}">{{ $user->name }}</option>
+        @endforeach
+    </select>
+</div>
+                    @endif
+
+
                 {{-- الإجمالي الكلي --}}
                 <div class="mt-3 alert alert-info">
                     <strong>الإجمالي الكلي:</strong> {{ $this->total }} جنيه
                 </div>
-                <div class="mt-3 form-check">
-                    <input class="form-check-input" type="checkbox" id="isDebtor" wire:model="is_debtor">
-                    <label class="form-check-label" for="isDebtor">
-                        عملية شراء غير مدفوعة
-                    </label>
-                </div>
-                @if($is_debtor)
-                    <div class="mt-3 form-group">
-                        <label for="customerName">اسم العميل:</label>
-                        <input type="text" id="customerName" class="form-control" wire:model.defer="customer_name"
-                            placeholder="ادخل اسم العميل">
-                    </div>
-                @endif
+               <div class="mt-3 form-group">
+    <label>طريقة الدفع</label>
+
+    <select wire:model="payment_type" class="form-control">
+        <option value="cash">كاش</option>
+        <option value="installment">تقسيط</option>
+    </select>
+</div>
+           @if($payment_type === 'installment')
+
+<div class="mt-3 form-group">
+    <label>اختيار خطة التقسيط</label>
+    <select wire:model="selected_installments_id" class="form-control">
+        <option value="">-- اختر الخطة --</option>
+        @foreach($installments as $plan)
+            <option value="{{ $plan->id }}">
+                {{ $plan->name }} ({{ $plan->months_count }} شهر)
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<div class="form-group">
+    <label>المقدم</label>
+    <input type="number" class="form-control" wire:model="down_payment" min="0">
+</div>
+
+<div class="form-group">
+    <label>تاريخ البداية</label>
+    <input type="date" class="form-control" wire:model="start_date">
+</div>
+
+@endif
                 {{-- زر تأكيد الطلب --}}
                 <button class="mt-3 btn btn-success" wire:click="confirmOrder">
                     <i class="fas fa-check"></i> تأكيد الطلب
                 </button>
             </div>
 
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Minimal</label>
-                            <select class="form-control select2" style="width: 100%;">
-                                <option selected="selected">Alabama</option>
-                                <option>Alaska</option>
-                                <option>California</option>
-                                <option>Delaware</option>
-                                <option>Tennessee</option>
-                                <option>Texas</option>
-                                <option>Washington</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
 
 

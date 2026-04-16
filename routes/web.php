@@ -3,6 +3,7 @@
 use App\Http\Controllers\DebtorController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\home;
+use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\MinProductController;
 use App\Http\Controllers\ProcessingSaleController;
 use App\Http\Controllers\ProductController;
@@ -31,7 +32,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('sales-report', ProcessingSaleController::class);
     Route::resource('product', ProductController::class);
     Route::resource('user', UserController::class);
-    // Route::resource('user-update', UserController::class);
+    Route::resource('installment', InstallmentController::class);
+
     Route::resource('debtor', DebtorController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('min_product', MinProductController::class);
@@ -39,11 +41,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/processing-sales/run', [ProcessingSaleController::class, 'processSales'])->name('processing-sales.processSales');
     Route::patch('/debts/{id}/mark-paid', [DebtorController::class, 'markAsPaid'])->name('debt.markAsPaid');
     Route::resource('purchase', PurchaseController::class);
-     
+
 
     Route::delete('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulkDelete');
     Route::delete('/supplier/bulk-delete', [SupplierController::class, 'bulkDelete'])->name('supplier.bulkDelete');
     Route::delete('user/bulk-delete', [UserController::class, 'bulkDelete'])->name('user.bulkDelete');
+    Route::delete('installment-delete/bulk-delete', [InstallmentController::class, 'bulkDelete'])->name('installment-delete.bulkDelete');
 });
 
 

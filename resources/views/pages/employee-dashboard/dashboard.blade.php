@@ -5,5 +5,5 @@
 @section('content')
     <h4>إضافة منتج بالباركود</h4>
 
-    @livewire('scan-product')
+   <livewire:scan-product  :users="$users" :installments="$installments" />
 @endsection

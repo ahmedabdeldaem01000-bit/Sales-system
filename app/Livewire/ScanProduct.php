@@ -4,7 +4,13 @@ namespace App\Livewire;
 
 
 use App\Models\Debtor;
+use App\Models\Installment;
+use App\Models\InstallmentItem;
+use App\Models\InstallmentPlan;
+use App\Models\Payment;
+use App\Models\User;
 use DB;
+use Illuminate\Http\Request;
 use Livewire\Component;
 use App\Models\Product;
 use App\Models\Order;
@@ -14,20 +20,34 @@ use Illuminate\Support\Facades\Auth;
 class ScanProduct extends Component
 {
     public $barcode;
+    public $installments;
+    public $down_payment;
+    public $start_date;
+
+    public $users;
+    public $payment_type;
+    public $selected_user_id;
+    public $selected_installments_id;
     public $product;
     public $quantity = 1;
     public $cart = [];
     public $is_debtor = false;
     public ?string $customer_name = '';
 
-    public function mount()
+    public function mount($users,$installments)
     {
         $this->cart = session('cart', []);
+        $this->users = $users;
+        $this->installments = $installments;
     }
 
     public function updatedBarcode()
     {
         $this->product = Product::where('barcode', $this->barcode)->first();
+
+
+
+
     }
     public function updatedCart()
     {
@@ -100,7 +120,7 @@ class ScanProduct extends Component
         session(['cart' => $cart]);
         $this->cart = $cart;
 
-        $this->reset(['barcode', 'product', 'quantity']);
+       $this->reset(['barcode', 'product', 'quantity']);
         session()->flash('success', 'تمت الإضافة إلى السلة بنجاح.');
     }
 
@@ -132,33 +152,46 @@ class ScanProduct extends Component
     {
         return collect($this->cart)->sum(fn($item) => $item['price'] * $item['quantity']);
     }
-    public function confirmOrder()
-    {
-        $cart = session('cart', []);
+ public function confirmOrder()
+{
+    $cart = session('cart', []);
 
-        if (empty($cart)) {
-            session()->flash('error', 'السلة فارغة.');
-            return;
-        }
-        $total = collect($cart)->sum(function ($item) {
-            return $item['price'] * $item['quantity'];
-        });
-        // ✅ إدخال في جدول order_items
+    if (empty($cart)) {
+        session()->flash('error', 'السلة فارغة.');
+        return;
+    }
+
+    if (empty($this->selected_user_id)) {
+        session()->flash('error', 'برجاء اختيار عميل');
+        return;
+    }
+
+    if ($this->payment_type === 'installment' && empty($this->selected_installments_id)) {
+        session()->flash('error', 'برجاء اختيار خطة التقسيط');
+        return;
+    }
+
+    DB::beginTransaction();
+
+    try {
+        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+
+        // ✅ 1. Create Order
         $order = Order::create([
+            'user_id' => $this->selected_user_id,
             'total' => $total,
-
             'employee_id' => auth()->id(),
+            'payment_type' => $this->payment_type,
+            'paid_amount' => $this->payment_type === 'cash' ? $total : $this->down_payment,
         ]);
+
+        // ✅ 2. Order Items + stock
         foreach ($cart as $item) {
             $product = Product::find($item['id']);
 
             if (!$product || $item['quantity'] > $product->quantity) {
-                session()->flash('error', 'الكمية غير متوفرة للمنتج: ' . $item['name']);
-                return;
+                throw new \Exception('الكمية غير متوفرة: ' . $item['name']);
             }
-
-
-
 
             OrderItem::create([
                 'order_id' => $order->id,
@@ -167,41 +200,71 @@ class ScanProduct extends Component
                 'price' => $item['price'],
                 'employee_id' => auth()->id(),
             ]);
-            // خصم الكمية من المخزون
+
             $product->decrement('quantity', $item['quantity']);
+        }
 
-            $product->save();
-            if ($this->is_debtor) {
-                if (!$this->customer_name) {
-                    session()->flash('error', 'من فضلك أدخل اسم العميل.');
-                    return;
-                }
-                $total = $item['price'] * $item['quantity'];
+        // 💳 3. CASH
+        if ($this->payment_type === 'cash') {
 
-                Debtor::create([
-                    'name' => $item['name'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'customer_name' => $this->customer_name,
-                    'user' => auth()->user()->name ?? 'guest',
-                    'employee_id' => auth()->id(),
-                    'date' => now(),
-                    'payment_status' => 'unpaid',
-                    'total' => $total,
+            Payment::create([
+                'order_id' => $order->id,
+                'amount' => $total,
+                'method' => 'cash',
+                'payment_date' => now(),
+            ]);
+        }
+
+        // 💳 4. INSTALLMENT
+        else {
+
+            $plan = InstallmentPlan::find($this->selected_installments_id);
+
+            $totalWithInterest = $total + ($total * $plan->interest_rate / 100);
+
+            $installment = Installment::create([
+                'order_id' => $order->id,
+                'plan_id' => $plan->id,
+                'total_with_interest' => $totalWithInterest,
+                'down_payment' => $this->down_payment,
+                'remaining_amount' => $totalWithInterest - $this->down_payment,
+                'start_date' => $this->start_date ?? now(),
+            ]);
+
+            $monthlyAmount = round($installment->remaining_amount / $plan->months_count, 2);
+
+            for ($i = 1; $i <= $plan->months_count; $i++) {
+                InstallmentItem::create([
+                    'installment_id' => $installment->id,
+                    'due_date' => now()->addMonths($i),
+                    'amount' => $monthlyAmount,
+                    'status' => 'pending',
+                ]);
+            }
+
+            // تسجيل المقدم
+            if ($this->down_payment > 0) {
+                Payment::create([
+                    'order_id' => $order->id,
+                    'amount' => $this->down_payment,
+                    'method' => 'cash',
+                    'payment_date' => now(),
                 ]);
             }
         }
 
-        // تفريغ السلة بعد الإضافة
+        DB::commit();
 
         session()->forget('cart');
         $this->cart = [];
-        $this->is_debtor = false;
-        $this->customer_name = null;
-      
+
         session()->flash('success', 'تم تأكيد الطلب بنجاح.');
 
+    } catch (\Exception $e) {
+        DB::rollBack();
+        session()->flash('error', $e->getMessage());
     }
+}
 
 
     public function render()

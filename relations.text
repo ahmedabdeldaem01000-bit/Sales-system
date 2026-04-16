@@ -1,0 +1,13 @@
+                                    ,نوع العلاقة
+    الجدول الثاني    الجدول الأول              
+        Employee    ,Order             ,One-to-Many
+
+        Employee    ,Debtor            ,One-to-Many
+
+        Order       ,OrderItem         ,One-to-Many
+
+        Supplier    ,Purchase          ,One-to-Many
+
+        Purchase    ,Product           ,Many-to-Many
+
+        User        ,Order             ,One-to-Many

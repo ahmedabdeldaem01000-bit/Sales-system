@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InstallmentPlan;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProductsEmployeeController extends Controller
@@ -12,10 +14,10 @@ class ProductsEmployeeController extends Controller
      */
     public function index()
     {
-         $product = Product::all();
-
-      
-        return view('pages.employee-dashboard.dashboard', compact('product'));
+        $product = Product::all();
+        $installments = InstallmentPlan::all();
+        $users = User::all();
+        return view('pages.employee-dashboard.dashboard', compact('product', 'users','installments'));
     }
 
     /**
@@ -39,7 +41,10 @@ class ProductsEmployeeController extends Controller
      */
     public function show(string $barcode)
     {
-         $product = Product::where('barcode', $barcode)->get();
+        $product = Product::where('barcode', $barcode)->get();
+
+
+
         return view('pages.employee-dashboard.dashboard', compact('product'));
 
     }

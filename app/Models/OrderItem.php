@@ -11,6 +11,7 @@ class OrderItem extends Model
         use HasFactory;
  
     protected $fillable = ['order_id','product_id','total' ,'quantity', 'price'];
+    protected $appends = ['total'];
 
     public function order()
 {
@@ -21,11 +22,11 @@ public function product()
 {
     return $this->belongsTo(Product::class);
 }
-protected $appends = ['total'];
+
 
 public function getTotalAttribute()
 {
-    return $this->price * $this->quantity;
+    return $this->price * $this->quantity ;
 }
 public function employee()
 {

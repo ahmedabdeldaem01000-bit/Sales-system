@@ -15,17 +15,13 @@ class PurchaseItem extends Model
         'total_price'
     ];
 
-    /**
-     * العلاقة مع الفاتورة الأم
-     */
+ 
     public function purchase()
     {
         return $this->belongsTo(Purchase::class, 'purchase_id');
     }
 
-    /**
-     * العلاقة مع المنتج
-     */
+   
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');

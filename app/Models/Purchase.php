@@ -21,18 +21,14 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class)->withTrashed();
     }
 
-    // public function product()
-    // {
-    //     return $this->belongsTo(Product::class);
-    // }
+ 
 
     public function product()
     {
         return $this->belongsToMany(Product::class, 'purchase_items')
             ->withPivot('quantity', 'price');
     }
-    // في Purchase.php
-    // تحديد العلاقة مع الموظف
+   
     public function employee()
     {
         return $this->belongsTo(Employee::class);
