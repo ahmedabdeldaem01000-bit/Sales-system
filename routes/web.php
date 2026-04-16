@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductsEmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ✅ أول ما تفتح المشروع يوديك على صفحة تسجيل الدخول
@@ -29,6 +30,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('sales-report', ProcessingSaleController::class);
     Route::resource('product', ProductController::class);
+    Route::resource('user', UserController::class);
+    // Route::resource('user-update', UserController::class);
     Route::resource('debtor', DebtorController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('min_product', MinProductController::class);
@@ -40,6 +43,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/products/bulk-delete', [ProductController::class, 'bulkDelete'])->name('products.bulkDelete');
     Route::delete('/supplier/bulk-delete', [SupplierController::class, 'bulkDelete'])->name('supplier.bulkDelete');
+    Route::delete('user/bulk-delete', [UserController::class, 'bulkDelete'])->name('user.bulkDelete');
 });
 
 
