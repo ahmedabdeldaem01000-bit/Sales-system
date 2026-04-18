@@ -20,7 +20,7 @@
       @if(auth()->user()->role === 'admin')
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
-                       with font-awesome or any other icon font library -->
+                         with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
             <a href="{{route('home')}}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -173,7 +173,32 @@
                   <p> انشاء خطه جديده</p>
                 </a>
               </li>
-            
+
+
+
+
+            </ul>
+
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa-solid fa-file-lines"></i>
+              <p>
+                الطلبات
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right"></span> -->
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('orders.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p> جدول الطلبات</p>
+                </a>
+              </li>
+
+           
+
 
 
 

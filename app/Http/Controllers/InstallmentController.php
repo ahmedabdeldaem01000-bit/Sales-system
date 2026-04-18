@@ -45,9 +45,10 @@ class InstallmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($installmentId)
     {
-        //
+        
+        return view('pages.installment.show',compact('installmentId'));
     }
 
     /**
