@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -22,7 +21,11 @@ return new class extends Migration
             $table->decimal('paid_amount', 10, 2)->default(0)->comment('Amount already paid');
             $table->enum('status', ['pending', 'paid', 'late'])->default('pending')->comment('Payment status');
             $table->timestamps();
+            $table->string('payment_link')->nullable();
+            $table->string('paypal_order_id')->nullable();
 
+
+            $table->string('paypal_token')->nullable()->index();
             $table->index('installment_id');
             $table->index('due_date');
             $table->index('status');

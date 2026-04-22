@@ -96,6 +96,35 @@
             <a href="#" class="nav-link">
               <i class="fa-solid fa-user-tie"></i>
               <p>
+                الموظفين
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right"></span> -->
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('employee.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>صفحه الموظفين</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{ route('employee.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>انشاء موظفين </p>
+                </a>
+              </li>
+
+
+
+            </ul>
+
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fa-solid fa-user-tie"></i>
+              <p>
                 الموردين
                 <i class="fas fa-angle-left right"></i>
                 <!-- <span class="badge badge-info right"></span> -->
@@ -196,6 +225,15 @@
                   <p> جدول الطلبات</p>
                 </a>
               </li>
+                <li class="nav-item">
+          <a href="{{ route('order-create.index') }}" class="flex flex-row flex-wrap items-center gap-4 nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              انشاء طلبات
+              <!-- <span class="right badge badge-danger">New</span> -->
+            </p>
+          </a>
+        </li>
 
            
 

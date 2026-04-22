@@ -19,6 +19,11 @@ class InstallmentItem extends Model
         'amount',
         'paid_amount',
         'status',
+        'reminder_sent_at',
+        'payment_link',
+          'paypal_order_id',
+          
+
     ];
 
     /**

@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-          $table->enum('payment_type', ['cache', 'installment'])->default('cache')->comment('payment_type');
-            
-     $table->decimal('paid_amount', 10, 2)->default(0)->comment('Amount already paid');
+            $table->enum('payment_type', ['cache', 'paypal','installment'])->default('cache')->comment('payment_type');
+            $table->string('paypal_order_id')->nullable();
+            $table->decimal('paid_amount', 10, 2)->nullable()->default(0)->comment('Amount already paid');
             $table->timestamps();
         });
     }

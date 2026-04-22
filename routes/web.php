@@ -6,6 +6,7 @@ use App\Http\Controllers\home;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\MinProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\ProcessingSaleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductsEmployeeController;
@@ -15,9 +16,14 @@ use App\Http\Controllers\UserController;
 use App\Livewire\OrdersList;
 use Illuminate\Support\Facades\Route;
 
-// ✅ أول ما تفتح المشروع يوديك على صفحة تسجيل الدخول
 
-Route::get('/', fn() => redirect()->route('login'));
+
+// Route::get('/', fn() => redirect()->route('login'));
+
+
+Route::get('paypal/success', [PayPalController::class, 'success'])
+    ->name('paypal.success');
+Route::get('/paypal/cancel', fn() => 'تم الإلغاء')->name('paypal.cancel');
 
 
 // ✅ Routes للأدمن فقط
@@ -49,19 +55,20 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/supplier/bulk-delete', [SupplierController::class, 'bulkDelete'])->name('supplier.bulkDelete');
     Route::delete('user/bulk-delete', [UserController::class, 'bulkDelete'])->name('user.bulkDelete');
     Route::delete('installment-delete/bulk-delete', [InstallmentController::class, 'bulkDelete'])->name('installment-delete.bulkDelete');
+    Route::delete('employee/bulk-delete', [EmployeeController::class, 'bulkDelete'])->name('employee.bulkDelete');
 
     // Livewire routes for orders and installments
     Route::get('/orders', [OrderController::class,'index'])->name('orders.index');
     Route::get('/orders/{orderId}', [OrderController::class,'show'])->name('order.show');
-    Route::get('/installments/{installmentId}', [InstallmentController::class,'show'])->name('installment.show');
+    Route::get('/installments/{installmentId}', [InstallmentController::class,'show'])->name('installments.show');
+    Route::resource('order-create', ProductsEmployeeController::class);
 
  });
 
 
-
 Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::resource('employee-products', ProductsEmployeeController::class);
-
+    // Route::post('send', ProductsEmployeeController::class)->name('send.order');
 
 
 

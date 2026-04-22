@@ -9,7 +9,7 @@
                 <p><strong>Payment Type:</strong> {{ ucfirst($order->payment_type) }}</p>
                 <p><strong>Paid Amount:</strong> {{ $order->paid_amount }}</p>
 
-                @if($order->payment_type == 'installment' && $order->installments->count() > 0)
+                @if($order->payment_type == 'paypal' && $order->installments->count() > 0)
                     <p><strong>Installment Plan:</strong> {{ $order->installments->first()->plan->name }}</p>
                     <p><strong>Down Payment:</strong> {{ $order->installments->first()->down_payment }}</p>
                     <p><strong>Remaining:</strong> {{ $order->installments->first()->remaining_amount }}</p>

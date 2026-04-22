@@ -87,11 +87,12 @@
     <label>طريقة الدفع</label>
 
     <select wire:model="payment_type" class="form-control">
-        <option value="cash">كاش</option>
-        <option value="installment">تقسيط</option>
+        <option value="">اختار نوع الدفع</option>
+        <option  value="cache">كاش</option>
+        <option value="paypal">paypal</option>
     </select>
 </div>
-           @if($payment_type === 'installment')
+           @if($payment_type === 'installment'||$payment_type === 'paypal')
 
 <div class="mt-3 form-group">
     <label>اختيار خطة التقسيط</label>

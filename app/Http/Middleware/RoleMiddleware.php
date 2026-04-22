@@ -15,7 +15,7 @@ class RoleMiddleware
      */
 public function handle(Request $request, Closure $next, $role): Response
 {
-    logger('Current user role: ' . optional(auth()->user())->role);
+    // logger('Current user role: ' . optional(auth()->user())->role);
     
     if (!auth()->check() || auth()->user()->role !== $role) {
         abort(404);

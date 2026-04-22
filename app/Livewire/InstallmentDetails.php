@@ -23,7 +23,7 @@ class InstallmentDetails extends Component
 
     public function loadInstallment()
     {
-        $this->installment = Installment::with('items.payments', 'order')->find($this->installmentId);
+        $this->installment = Installment::with('installment', 'order')->find($this->installmentId);
     }
 
     public function openPaymentModal($itemId)
@@ -67,6 +67,7 @@ class InstallmentDetails extends Component
             'payment_date' => now(),
         ]);
 
+        
         // Update item paid_amount
         $item->paid_amount += $this->paymentAmount;
         $item->save();

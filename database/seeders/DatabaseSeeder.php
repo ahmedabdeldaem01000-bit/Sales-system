@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             SupplierSeeder::class,
             ProductSeeder::class,
+            InstalmentPlanSeeder::class,
           
             DebtorSeeder::class,
             

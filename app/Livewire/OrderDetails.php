@@ -23,7 +23,7 @@ class OrderDetails extends Component
 
     public function viewInstallment($installmentId)
     {
-        return redirect()->route('installment.show', $installmentId);
+        return redirect()->route('installments.show', $installmentId);
     }
 
     public function render()

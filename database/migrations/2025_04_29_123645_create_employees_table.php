@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->decimal('prg', 10, 2)->default(0);
             $table->string('phone')->nullable();
             $table->string('role')->default('employee');
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
+            $table->string('address')->nullable();
             $table->string('password')->default('employee');
 
             $table->timestamps();

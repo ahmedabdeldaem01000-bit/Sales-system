@@ -27,14 +27,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($installment->items as $item)
+                        @foreach($installment->installment as $item)
                             <tr>
                                 <td>{{ $item->due_date->format('Y-m-d') }}</td>
+                             
                                 <td>{{ $item->amount }}</td>
                                 <td>{{ $item->paid_amount }}</td>
                                 <td>
                                     <span class="badge 
-                                        @if($item->status == 'paid') badge-success
+                                        @if($item == 'paid') badge-success
                                         @elseif($item->status == 'late') badge-danger
                                         @else badge-warning
                                         @endif">

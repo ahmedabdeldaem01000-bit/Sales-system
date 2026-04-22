@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -38,7 +39,15 @@ class EmployeeSeeder extends Seeder
             'phone' => '01098765432',
             'role'=>'admin',
             'email'=>'email0@email.com',
-            'password' => bcrypt('0000000000'),
+            'password' => bcrypt('password'),
+        ]);
+         User::create([
+            'name' => 'ahmed',
+            'email'=>'ahmedabdeldaem01000@gmail.com',
+            'phone' => '011098765432',
+            'address'=>"cairo",
+            'role'=>'user',
+     
         ]);
     }
 }

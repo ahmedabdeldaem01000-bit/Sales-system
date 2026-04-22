@@ -23,7 +23,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->comment('Reference to the installment plan');
             $table->decimal('total_with_interest', 10, 2)->comment('Total amount including interest');
-            $table->decimal('down_payment', 10, 2)->default(0)->comment('Initial down payment');
+            $table->decimal('down_payment', 10, 2)->nullable()->default(0)->comment('Initial down payment');
             $table->decimal('remaining_amount', 10, 2)->comment('Remaining amount to be paid');
             $table->date('start_date')->comment('Date when installment starts');
             $table->timestamps();

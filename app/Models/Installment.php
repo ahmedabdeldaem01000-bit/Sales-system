@@ -36,6 +36,15 @@ class Installment extends Model
         'updated_at' => 'datetime',
     ];
 
+
+      /**
+     * Get the installment items for this installment.
+     */
+    public function installment(): HasMany
+    {
+        return $this->hasMany(InstallmentItem::class, 'installment_id');
+    }
+
     /**
      * Get the order this installment belongs to.
      */
@@ -44,6 +53,7 @@ class Installment extends Model
         return $this->belongsTo(Order::class);
     }
 
+    
     /**
      * Get the installment plan for this installment.
      */
@@ -52,14 +62,7 @@ class Installment extends Model
         return $this->belongsTo(InstallmentPlan::class, 'plan_id');
     }
 
-    /**
-     * Get the installment items for this installment.
-     */
-    public function items(): HasMany
-    {
-        return $this->hasMany(InstallmentItem::class, 'installment_id');
-    }
-
+  
     /**
      * Calculate the total paid amount across all items.
      */

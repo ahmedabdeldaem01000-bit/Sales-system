@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,13 +17,19 @@ return Application::configure(basePath: dirname(__DIR__))
     )
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-
+ $middleware->validateCsrfTokens(except: [
+        'api/paypal/webhook',  
+    ]);
     $middleware->web(append: [
         HandleAppearance::class,
         HandleInertiaRequests::class,
         AddLinkHeadersForPreloadedAssets::class,
     ]);
-}) 
+})  
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })->withSchedule(function (Schedule $schedule) {
+    $schedule->command('app:send-installment-reminders')->everyMinute();
+})
+    
+    ->create();

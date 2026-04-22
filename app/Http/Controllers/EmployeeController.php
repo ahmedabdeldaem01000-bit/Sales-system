@@ -11,52 +11,72 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index()
-{
-    // تحميل الموظفين مع العناصر والديون
-    $employees = Employee::with(['orderItems', 'debts'])->get();
+    public function index()
+    {
+        // تحميل الموظفين مع العناصر والديون
+        // $employees = Employee::with(['orderItems', 'debts'])->get();
 
-    foreach ($employees as $employee) {
-       
-        $employee->total_sales = $employee->orderItems->sum(fn($item) => $item->price * $item->quantity);
+        // foreach ($employees as $employee) {
 
-        $employee->total_debt = $employee->debts
-            ->where('payment_status', 'unpaid')
-            ->sum(fn($debt) => $debt->price * $debt->quantity);
+        //     $employee->total_sales = $employee->orderItems->sum(fn($item) => $item->price * $item->quantity);
+
+        //     $employee->total_debt = $employee->debts
+        //         ->where('payment_status', 'unpaid')
+        //         ->sum(fn($debt) => $debt->price * $debt->quantity);
+        // }
+
+        // return view('pages.emp.index', compact('employees'));
+
+        $employees = Employee::get();
+
+        return view('pages.employee.index', compact('employees'));
     }
-
-    return view('pages.emp.index', compact('employees'));
-}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('pages.employee.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
-{
-    
-}
-public function sales($id)
-{
-    $employee = Employee::with(['orders.orderItems.product'])->findOrFail($id);
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
 
-    return view('pages.emp.show', compact('employee'));
-}
+        Employee::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+        ]);
+        return redirect()->route('employee.create')->with('success','Employee Created successfully');
+    }
+
+    public function sales($id)
+    {
+        $employee = Employee::with(['orders.orderItems.product'])->findOrFail($id);
+
+        return view('pages.employee.show', compact('employee'));
+    }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        
-        // $employee = Employee::with('sales.product')->findOrFail($id);
-        // return view('pages.emp.show', compact('employee'));
+
+        $employee = Employee::findOrFail($id);
+        return view('pages.employee.show', compact('employee'));
     }
 
     /**
@@ -64,7 +84,8 @@ public function sales($id)
      */
     public function edit(string $id)
     {
-        //
+            $employee = Employee::findOrFail($id);
+        return view('pages.employee.edit', compact('employee'));
     }
 
     /**
@@ -72,14 +93,49 @@ public function sales($id)
      */
     public function update(Request $request, string $id)
     {
-        //
+        $employee=Employee::findOrFail($id);
+           $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required',  
+            'phone' => 'required',
+            'address' => 'required',
+        ]);
+
+        $employee->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+        ]);
+        return redirect()->route('employee.edit',$id)->with('success','employee Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+            $ids = $request->input('employees'); // نتأكد إن الاسم متطابق مع الفورم
+
+        if ($ids && is_array($ids)) {
+            Employee::whereIn('id', $ids)->delete();
+            return redirect()->route('employee.index')->with('success', 'تم حذف الموظف  بنجاح');
+        }
+
+        return redirect()->route('employee.index')->with('error', 'لم يتم تحديد موظف للحذف');
+
+    }
+       public function bulkDelete(Request $request)
+    {
+            $ids = $request->input('employees'); // نتأكد إن الاسم متطابق مع الفورم
+            // dd($ids);
+
+        if ($ids && is_array($ids)) {
+            Employee::whereIn('id', $ids)->delete();
+            return redirect()->route('employee.index')->with('success', 'تم حذف الموظف  بنجاح');
+        }
+
+        return redirect()->route('employee.index')->with('error', 'لم يتم تحديد موظف للحذف');
+
     }
 }
