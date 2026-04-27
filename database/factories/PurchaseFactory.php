@@ -19,12 +19,16 @@ class PurchaseFactory extends Factory
      */
     public function definition(): array
     {
-        $supplier = Supplier::inRandomOrder()->first() ?? Supplier::factory()->create();
-        $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();
+        $supplier = Supplier::inRandomOrder()->first() ?? Supplier::factory()->create();//1
+        $employee = Employee::inRandomOrder()->first() ?? Employee::factory()->create();//1
 
-        $quantity = $this->faker->numberBetween(1, 100);
-        $unit_price = $this->faker->randomFloat(2, 10, 500);
-        $total_price = $quantity * $unit_price;
+        $quantity = $this->faker->numberBetween(1, 100); //50
+        $unit_price = $this->faker->randomFloat(2, 10, 500);//100.00
+        $total_price = $quantity * $unit_price;//5000.00
+        /**
+         * PurchaseItemFactory
+         */
+      
 
         return [
             'supplier_id' => $supplier->id,

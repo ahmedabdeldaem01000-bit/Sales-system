@@ -45,6 +45,7 @@ class PurchaseController extends Controller
                 'employee_id' => auth()->id(),
                 'total_price' => $request->grand_total,
             ]);
+            
 
             // 2. تكرار العملية لكل منتج في المصفوفة
             foreach ($request->items as $item) {

@@ -12,18 +12,7 @@
       
           <div class="col-lg-3 col-6">
             <!-- small card -->
-            <div class="small-box bg-success">
-              <div class="inner">
- 
-                <p>ضيف مدينين</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-              <a href="{{ route('debtor.create') }}" class="small-box-footer">
-                More info <i class="fas fa-arrow-circle-right"></i>
-              </a>
-            </div>
+         
             <div class="small-box bg-success">
               <div class="inner">
  

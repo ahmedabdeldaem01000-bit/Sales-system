@@ -38,11 +38,7 @@ public function orderItems()
 
 
   
-    public function debts()
-    {
-        return $this->hasMany(Debtor::class, 'employee_id');
-    }
-
+ 
   
     public function purchases()
     {

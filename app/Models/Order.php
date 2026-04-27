@@ -8,7 +8,7 @@ class Order extends Model
 {
         use HasFactory;
  
-    protected $fillable = ['employee_id','user_id','total','payment_type','paid_amount'];
+    protected $fillable = ['employee_id','user_id','total','payment_type','paid_amount','paypal_order_id','month'];
 
     public function items()
 {

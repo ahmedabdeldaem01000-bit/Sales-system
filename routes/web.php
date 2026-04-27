@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DebtorController;
+ 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\home;
 use App\Http\Controllers\InstallmentController;
@@ -27,14 +27,14 @@ Route::get('/paypal/cancel', fn() => 'تم الإلغاء')->name('paypal.cancel
 
 
 // ✅ Routes للأدمن فقط
-Route::get('/dashboard', fn() => view('pages.admin.dashboard'))->name('dashboard');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('employee', EmployeeController::class);
 
-    Route::get('/home', [home::class, 'index'])->name('home');
-    Route::get('/admin', fn() => view('pages.admin.dashboard'))->name('admin.dashboard');
+    // Route::get('/home', [home::class, 'index'])->name('home');
+    Route::get('/admin', fn() => view('home'))->name('home');
     Route::get('/employees/{id}/sales', [EmployeeController::class, 'sales'])->name('employees.sales');
+Route::get('/dashboard-home',  [home::class, 'index'])->name('dashboard-home.index');
 
 
     Route::resource('sales-report', ProcessingSaleController::class);
@@ -42,12 +42,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('user', UserController::class);
     Route::resource('installment', InstallmentController::class);
 
-    Route::resource('debtor', DebtorController::class);
     Route::resource('supplier', SupplierController::class);
     Route::resource('min_product', MinProductController::class);
     Route::resource('employee-products', ProductsEmployeeController::class);
-    Route::get('/processing-sales/run', [ProcessingSaleController::class, 'processSales'])->name('processing-sales.processSales');
-    Route::patch('/debts/{id}/mark-paid', [DebtorController::class, 'markAsPaid'])->name('debt.markAsPaid');
+    // Route::get('/processing-sales/run', [ProcessingSaleController::class, 'processSales'])->name('processing-sales.processSales');
+
     Route::resource('purchase', PurchaseController::class);
 
 

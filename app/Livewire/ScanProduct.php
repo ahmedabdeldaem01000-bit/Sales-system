@@ -2,8 +2,7 @@
 
 namespace App\Livewire;
 
-
-use App\Models\Debtor;
+ 
 use App\Models\Installment;
 use App\Models\InstallmentItem;
 use App\Models\InstallmentPlan;
@@ -36,8 +35,8 @@ class ScanProduct extends Component
     public $quantity = 1;
     protected $payPalService;
     public $cart = [];
-    public $is_debtor = false;
-    public ?string $customer_name = '';
+ 
+   
 
     public function boot(PayPalService $payPalService)
     {

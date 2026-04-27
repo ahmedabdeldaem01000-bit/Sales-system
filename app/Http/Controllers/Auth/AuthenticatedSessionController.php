@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
     }
 
     if ($user->role === 'admin') {
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('dashboard-home.index');
     }
 
     // fallback

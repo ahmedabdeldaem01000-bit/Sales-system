@@ -19,11 +19,13 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             SupplierSeeder::class,
             ProductSeeder::class,
+            DashboardSeeder::class,
             InstalmentPlanSeeder::class,
           
-            DebtorSeeder::class,
+  
             
-            PurchaseSeeder::class
+            PurchaseSeeder::class,
+            PurchaseItemSeeder::class
         ]);
     }
 }

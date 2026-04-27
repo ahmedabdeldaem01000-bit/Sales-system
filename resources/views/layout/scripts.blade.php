@@ -1,4 +1,4 @@
-@stack('before-scripts')
+@stack('scripts-database')
 <!-- jQuery -->
 <script src="{{asset('dashboard/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -76,11 +76,11 @@
         const newNotification = `
             <div class="dropdown-divider"></div>
             <a href="${data.article.url}" class="dropdown-item d-flex scrollbar-container" data-id="${data.article.id}">
-                <i class="fas fa-envelope mr-2"></i>
+                <i class="mr-2 fas fa-envelope"></i>
                 <div class="mr-3">
                     <h3 class="dropdown-item-title">${data.article.title}</h3>
                     <p class="text-sm text-muted">${data.article.author}</p>
-                    <span class="float-right text-muted text-sm">${formatDate(data.article.created_at)}</span>
+                    <span class="float-right text-sm text-muted">${formatDate(data.article.created_at)}</span>
                 </div>
             </a>
         `;

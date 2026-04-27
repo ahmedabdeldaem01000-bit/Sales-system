@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
                 $table->decimal('total', 10, 2)->nullable();
+                $table->string('month')->nullable();
 
         });
     }
